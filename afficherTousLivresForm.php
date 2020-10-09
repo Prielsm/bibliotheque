@@ -23,10 +23,11 @@
         $arrayResultat = $stmt->fetchAll(PDO::FETCH_ASSOC);
         // var_dump($arrayResultat);
 
+        echo '<h1>Bibliothèque</h1>'; 
         echo '<form action="./afficherTousLivresForm2.php" method="POST">';
-        echo '<h1>Bibliothèque</h1>';
-        for ($i=0; $i < count($arrayResultat)-1; $i++) { 
-            echo "<h2>Livre ".($i+1)."</h2>";
+
+        
+        for ($i=0; $i < count($arrayResultat)-1; $i++) {
             echo '<table border=1><thead><tr><th colspan="2">Livre '.($i+1).':</th></tr></thead>';
             echo "<tbody>";
 
@@ -35,16 +36,17 @@
 
             }
             echo "</tbody></table>";
-            echo '<input type="hidden" value ="'.$arrayResultat[$i]['id'].'" name="idLivre" id="">';
-            echo '<input type="hidden" value ="'.($i+1).'" name="idFake" id="">';
-            echo '<p><input type="submit" value="Update" id=""></p>';
+            // echo '<input type="hidden" value ="'.$arrayResultat[$i]['id'].'" name="idLivre" id="">';
+            // echo '<p><input type="submit" value="Update" id=""></p>';
+            echo '<p><button type="submit" value="'.$arrayResultat[$i]['id'].'" name="idLivre" id="">UPDATE</button></p>';
 
 
 
         }
+        echo "</form>\n";
 
 
-        echo '</form>';
+
 
      
 

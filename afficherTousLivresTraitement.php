@@ -8,15 +8,18 @@
 <body>
     <?php
         //obtenir les valeurs $_POST 
+        $id = $_POST['idLivre'];
+        // echo $id;
         $titre = $_POST['titre'];
-        echo $titre;
-        $date_publication = $_POST['date_publication'];
-        echo $date_publication;
+        // echo $titre;       
         $prix = $_POST['prix'];
-        echo $prix;
+        // echo $prix;
         $description = $_POST['description'];
-        echo $description;
-        var_dump($_POST);
+        // echo $description;
+        $date_publication = $_POST['date_publication'];
+        // echo $date_publication;
+        $isbn = $_POST['isbn'];
+        $auteur_id = $_POST['auteur_id'];
 
         //chercher la db
         include "./config/db.php";
@@ -28,39 +31,53 @@
             echo "Il y a eu une erreur dans la connexion de la base de données.";
         }
 
-        $sql = "SELECT * FROM livre";
+        $sql = "SELECT * FROM livre WHERE id = ".$id;
         $stmt = $db->prepare($sql);
         $stmt->execute();
 
-        $arrayResultat = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $livre = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $index;
-        for ($i=0; $i < count($arrayResultat); $i++) { 
-            if (isset($_POST[$i])) {
-                echo "i=".$i;
-                var_dump($arrayResultat[$i]);               
-                $index=$i;
+        // echo "ancienne titre : ".$livre['titre']."<br>";
+        // echo "nouvelle titre : ".$titre;
+        // echo "ancienne prix : ".$livre['prix']."<br>";
+        // echo "nouvelle prix : ".$prix;
+        // echo "ancienne description : ".$livre['description']."<br>";
+        // echo "nouvelle description : ".$description;
+        // echo "ancienne date_publication : ".$livre['date_publication']."<br>";
+        // echo "nouvelle date_publication : ".$date_publication;
+        // echo "ancienne isbn : ".$livre['isbn']."<br>";
+        // echo "nouvelle isbn : ".$isbn;
+        // echo "ancienne auteur_id : ".$livre['auteur_id']."<br>";
+        // echo "nouvelle auteur_id : ".$auteur_id;
+        
+        
+        $sql = "UPDATE livre SET titre = ".$titre." WHERE titre =  ".$livre['titre'];
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
 
-            }
-
-        }
-
-        echo $index;
-        var_dump($arrayResultat[$index]['description']);
+        $sql = "UPDATE livre SET prix = ".$prix." WHERE prix =  ".$livre['prix'];
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        
+        $sql = "UPDATE livre SET description = ".$description." WHERE description =  ".$livre['description'];
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        
+        $sql = "UPDATE livre SET date_publication = ".$date_publication." WHERE date_publication =  ".$livre['date_publication'];
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        
+        $sql = "UPDATE livre SET isbn = ".$isbn." WHERE isbn =  ".$livre['isbn'];
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        
+        $sql = "UPDATE livre SET auteur_id = ".$auteur_id." WHERE auteur_id =  ".$livre['auteur_id'];
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        
+       
 
         
-        // $sql = "UPDATE livre SET titre = ".$titre." WHERE titre =  ".$arrayResultat[$index]['titre'];
-        // $stmt = $db->prepare($sql);
-        // $stmt->execute();
-
-        echo "ancienne description : ".$arrayResultat[$index]['description']."<br>";
-        echo "nouvelle description : ".$description;
-        $sql = "UPDATE livre SET description = '".$description."' WHERE titre =  '".$arrayResultat[$index]['description']."'";
-        $stmt = $db->prepare($sql);
-        $stmt->execute();
-        var_dump($stmt->errorInfo());
-
-
         //UPDATE trains SET villeDepart = 'Genk' WHERE villeDepart = 'GENT'
 
 

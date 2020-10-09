@@ -7,7 +7,7 @@
 </head>
 <body>
     <?php
-        var_dump($_POST);
+        // var_dump($_POST);
         include "./config/db.php";
         
         try {
@@ -17,7 +17,7 @@
             echo "Il y a eu une erreur dans la connexion de la base de données.";
         }
         $id = $_POST['idLivre'];
-        $idFake = $_POST['idFake'];
+        // echo $id;
 
         $sql = "SELECT * FROM livre WHERE id = ".$id;
         $stmt = $db->prepare($sql);
@@ -25,39 +25,36 @@
 
         $livre = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // if (isset($_POST[2])) {
-        //     echo "je suis le livre2";
-        // }
+        echo '<form action="./afficherTousLivresTraitement.php" method="POST">';
 
-        
-            if (isset($id)) {
-                echo "<h2>Livre ".($idFake)."</h2>";
-                echo '<form action="./afficherTousLivresTraitement.php" method="POST">';
-
-                foreach ($livre as $key => $value) {
-                    if ($key == 'id' || $key == 'prix' || $key == 'auteur_id') {
-                        echo "<p>".$key.' : <input type="number" name="'.$key.'" value="'.$value.'" id=""></p>';
-
-                    }
-                    elseif ($key == 'date_publication') {
-                        $objDate = new DateTime($value);
-                        $strDate = $objDate->format("Y-m-d\TH:i");
-                        // var_dump($strDate);
-                        echo '<p>'.$key.' : <input type="datetime-local" id="" name="'.$key.'" 
-                            value="'.$strDate.'" min="1900-01-01T00:00" max="2030-12-31T23:59"
-                            >
-                        </p>';
-
-                    }
-                    else {
-                        echo "<p>".$key.' : <input type="text" name="'.$key.'" value="'.$value.'" id=""></p>';
-
-                    }
-
-                }
-                // echo '<p><input type="submit" value="Update" name="'.$i.'" id=""></p>';
-                echo "</form>";
+        foreach ($livre as $key => $value) {
+            if ($key == 'id') {
+                echo "ID du livre : ".$value;
+                echo "<br>------------------------";
             }
+            elseif ($key == 'prix' || $key == 'auteur_id') {
+                echo "<p>".$key.' : <input type="number" name="'.$key.'" value="'.$value.'" id=""></p>';
+
+            }
+            elseif ($key == 'date_publication') {
+                $objDate = new DateTime($value);
+                $strDate = $objDate->format("Y-m-d\TH:i");
+                // var_dump($strDate);
+                echo '<p>'.$key.' : <input type="datetime-local" id="" name="'.$key.'" 
+                    value="'.$strDate.'" min="1900-01-01T00:00" max="2030-12-31T23:59"
+                    >
+                </p>';
+
+            }
+            else {
+                echo "<p>".$key.' : <input type="text" name="'.$key.'" value="'.$value.'" id=""></p>';
+
+            }
+
+        }
+        echo '<p><button type="submit" value="'.$id.'" name="idLivre" id="">UPDATE</button></p>';
+        echo "</form>";
+            
 
 
             // <form action="./insererLivreTraitement.php" method="POST">
